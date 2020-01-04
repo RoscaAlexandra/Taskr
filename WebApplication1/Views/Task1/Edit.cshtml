@@ -1,0 +1,58 @@
+﻿@model TotallyNotJira.Models.Task1
+
+@{
+    ViewBag.Titlu = "Edit Task";
+}
+
+<h2>@ViewBag.Titlu</h2>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Task1"))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.HiddenFor(m => m.TaskId)
+    <br />
+    @Html.Label("TaskTitle", "Task title")
+    <br />
+    @Html.Editor("TaskTitle")
+    @Html.ValidationMessageFor(m => m.TaskTitle, "", new { @class = "text-danger" })
+    <br />
+    <br />
+
+    @Html.Label("TaskDescription", "Task Description")
+    <br />
+    @Html.EditorFor(m => m.TaskDescription)
+    @Html.ValidationMessageFor(m => m.TaskDescription, "", new { @class = "text-danger" })
+    <br />
+    <br />
+
+    @Html.LabelFor(x => x.TaskStartDate)
+    <br />
+    // @Html.EditorFor(m => m.TaskStartDate, new { htmlAttributes = new { @Value = Model.TaskStartDate.ToString("yyyy/MM/dd"), type = "date" } })
+    @Html.EditorFor(m => m.TaskStartDate, new { type = "date" })
+    <br />
+    <br />
+
+    @Html.LabelFor(x => x.TaskEndDate)
+    <br />
+    @Html.EditorFor(m => m.TaskEndDate, new { type = "date" })
+    <br />
+    @Html.HiddenFor(m => m.TeamId)
+    <br />
+    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text","Text"),
+ "Select status", new { @class = "form-control" })
+
+    <br />
+    @Html.DropDownListFor(m => m.TeamId, new SelectList(Model.Teams, "Value","Text"),
+ "Select team", new { @class = "form-control" })
+
+
+    <br />
+    <br />
+
+
+    <button class="btn btn-sm btn-success" type="submit">Save changes</button>
+}
+
+
+

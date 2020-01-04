@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TotallyNotJira.Models;
+using WebApplication1.Models;
 
 namespace TotallyNotJira.Controllers
 {
@@ -16,7 +17,8 @@ namespace TotallyNotJira.Controllers
         [Authorize(Roles = "Member,Organizator,Administrator")]
         public ActionResult Index()
         {
-            var projects = db.Projects.Include("Administrator").Include("Organizator");
+            var projects = db.Projects.Include("Teams").Include("User");
+
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.message = TempData["message"].ToString();
@@ -37,8 +39,11 @@ namespace TotallyNotJira.Controllers
         public ActionResult New()
         {
             Project project = new Project();
+
+            project.Teams = GetTeams();
             // Preluam ID-ul utilizatorului curent
             project.UserId = User.Identity.GetUserId();
+            project.UserName = User.Identity.GetUserName();
 
             ViewBag.Teams = GetTeams();
 
@@ -53,7 +58,7 @@ namespace TotallyNotJira.Controllers
         {
             try
             {
-                project.Team = db.Teams.Find(project.TeamId);
+                //project.Team = db.Teams.Find(project.TeamId);
 
                 db.Projects.Add(project);
                 db.SaveChanges();
@@ -79,6 +84,7 @@ namespace TotallyNotJira.Controllers
         {
             Project project = db.Projects.Find(id);
             ViewBag.Project = project;
+            project.Teams = GetTeams();
             if (project.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
                 return View(project);
@@ -86,7 +92,7 @@ namespace TotallyNotJira.Controllers
             else
             {
                 TempData["message"] = "You can not modify this project!";
-          return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
 
         }
@@ -148,26 +154,32 @@ namespace TotallyNotJira.Controllers
             else
             {
                 TempData["message"] = "You can not delete that project!";
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> GetTeams()
+        public IEnumerable<Team> GetTeams()
         {
-            var selectList = new List<SelectListItem>();
+            // generam o lista goala
+            var selectList = new List<Team>();
 
-            var teams = db.Teams.ToList();
+            // Extragem toate categoriile din baza de date
+            var teams = from team in db.Teams
+                             select team;
 
+            // iteram prin categorii
             foreach (var team in teams)
             {
-                selectList.Add(new SelectListItem
+                // Adaugam in lista elementele necesare pentru dropdown
+                selectList.Add(new Team
                 {
-                    Value = team.TeamId.ToString(),
-                    Text = team.Name.ToString()
+                    TeamId = team.TeamId,
+                    Name = team.Name.ToString()
                 });
             }
 
+            // returnam lista de categorii
             return selectList;
         }
     }

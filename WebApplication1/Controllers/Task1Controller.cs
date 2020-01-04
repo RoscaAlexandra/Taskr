@@ -9,19 +9,47 @@ namespace TotallyNotJira.Controllers
 {
     public class Task1Controller : Controller
     {
-        private TaskDBContext db = new TaskDBContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Task
         public ActionResult Index()
         {
             ViewBag.Tasks = db.Tasks.OrderBy(x => x.TaskTitle);
             return View();
         }
+
+        public ActionResult Show(int id)
+        {
+            Task1 task = db.Tasks.Find(id);
+            return View(task);
+
+        }
         public ActionResult New()
         {
-            return View();
+            Task1 task = new Task1();
+            var selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem
+            {
+                Value = "1",
+                Text = "Not started"
+            });
+            selectList.Add(new SelectListItem
+            {
+                Value = "2",
+                Text = "In progress"
+            });
+            selectList.Add(new SelectListItem
+            {
+                Value = "3",
+                Text = "Done"
+            });
+            ViewBag.Statuses = selectList;
+
+            task.Teams = GetAllTeams();
+
+            return View(task);
+           
         }
 
-        // POST: Project/Create
         [HttpPost]
         public ActionResult New(Task1 task)
         {
@@ -45,15 +73,35 @@ namespace TotallyNotJira.Controllers
             }
         }
 
-        // GET: Project/Edit/5
-        public ActionResult Edit(int id)
+       public ActionResult Edit(int id)
         {
-            ViewBag.Project = db.Tasks.Find(id);
+            Task1 task = db.Tasks.Find(id);
+            ViewBag.Task = task;
 
-            return View();
+            //status dropdown
+            var selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem
+            {
+                Value = "1",
+                Text = "Not started"
+            });
+            selectList.Add(new SelectListItem
+            {
+                Value = "2",
+                Text = "In progress"
+            });
+            selectList.Add(new SelectListItem
+            {
+                Value = "3",
+                Text = "Done"
+            });
+            ViewBag.Statuses = selectList;
+
+            task.Teams = GetAllTeams();
+
+            return View(task);
         }
 
-        // POST: Project/Edit/5
         [HttpPut]
         public ActionResult Edit(int id, Task1 requiredTask)
         {
@@ -86,8 +134,7 @@ namespace TotallyNotJira.Controllers
             }
         }
 
-        // GET: Project/Delete/5
-        [HttpDelete]
+ 
         public ActionResult Delete(int id)
         {
             Task1 task = db.Tasks.Find(id);
@@ -95,6 +142,31 @@ namespace TotallyNotJira.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllTeams()
+        {
+            // generam o lista goala
+            var selectList = new List<SelectListItem>();
+
+            // Extragem toate categoriile din baza de date
+            var teams = from team in db.Teams
+                             select team;
+
+            // iteram prin categorii
+            foreach (var team in teams)
+            {
+                // Adaugam in lista elementele necesare pentru dropdown
+                selectList.Add(new SelectListItem
+                {
+                    Value = team.TeamId.ToString(),
+                    Text = team.Name.ToString()
+                });
+            }
+
+            // returnam lista de categorii
+            return selectList;
         }
 
     }

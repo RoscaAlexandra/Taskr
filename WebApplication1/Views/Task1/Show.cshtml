@@ -1,0 +1,41 @@
+﻿@model TotallyNotJira.Models.Task1
+
+@{
+    ViewBag.Title = "Display task details";
+}
+
+<h1>@ViewBag.Title</h1>
+
+
+<div class="panel panel-default">
+
+    <div class="panel-heading"><strong>@Model.TaskTitle</strong></div>
+    <div class="panel-body">
+        @Model.TaskDescription
+    </div>
+    <br />
+    <div><strong>Start date: </strong></div>
+    <div>@Model.TaskStartDate.ToString("MM/dd/yyyy") </div>
+    <br />
+    <div><strong>End date:</strong></div>
+    <div>@Model.TaskEndDate.ToString("MM/dd/yyyy") </div>
+    <br />
+    <div><strong> Status: </strong>@Model.TaskStatus </div>
+
+    <div class="panel-footer">
+        <a class="btn" href="/Task1/Edit/@Model.TaskId">Edit task</a>
+        <br />
+    </div>
+</div>
+
+
+<br />
+<hr />
+<a class="btn btn-success" href="/Task1/Index">Go back to overview</a>
+
+
+
+
+
+
+

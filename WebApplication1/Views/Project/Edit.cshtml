@@ -28,7 +28,10 @@
 
     @Html.LabelFor(x => x.TeamId)
     <br />
-    @Html.DropDownListFor(x => x.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"))
+    //  @Html.DropDownListFor(x => x.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"))
+
+    @Html.DropDownListFor(m => m.TeamId, new SelectList(Model.Teams, "TeamId", "Name"),
+    "Select team id", new { @class = "form-control" })
     @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
     <br />
     <br />

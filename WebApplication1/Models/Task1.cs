@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
+using WebApplication1.Models;
 
 namespace TotallyNotJira.Models
 {
@@ -24,11 +26,16 @@ namespace TotallyNotJira.Models
         public DateTime TaskEndDate { get; set; }
 
         public int TeamId { get; set; }
+
+        public virtual Team Team { get; set; }
+
+        public IEnumerable<SelectListItem> Teams { get; set; }
         //public virtual ICollection<Comments> Comment { get; set; }
     }
+    /*
     public class TaskDBContext : DbContext
     {
         public TaskDBContext() : base("DBConnectionString") { }
         public DbSet<Task1> Tasks { get; set; }
-    }
+    }*/
 }

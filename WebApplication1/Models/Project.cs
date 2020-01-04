@@ -18,12 +18,16 @@ namespace TotallyNotJira.Models
         public string Description { get; set; }
 
         public string UserId { get; set; }
+        public string UserName { get; set; }
         public virtual ApplicationUser User { get; set; }
+
 
         [Required(ErrorMessage = "You must add your project to a team")]
         public string TeamId { get; set; }
         public virtual Team Team { get; set; }
         // public virtual ICollection<Task> Task { get; set; }
+        public IEnumerable<Team> Teams { get; set; }
+
     }
     /*
     public class ProjectDBContext : DbContext
