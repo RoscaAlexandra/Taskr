@@ -53,7 +53,7 @@ namespace TotallyNotJira.Controllers
 
         // POST: Project/Create
         [HttpPost]
-        [Authorize(Roles = "Member, Organizator,Administrator")]
+        [Authorize(Roles = "Member, Organizator, Administrator")]
         public ActionResult New(Project project)
         {
             try
