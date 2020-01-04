@@ -31,7 +31,7 @@ namespace TotallyNotJira.Models
         }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Team> Teams { get; set; }
-        public DbSet<Task1> Tasks { get; set; }
+        public DbSet<TaskItem> TaskItems { get; set; }
 
         public static ApplicationDbContext Create()
         {

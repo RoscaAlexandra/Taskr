@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Tasks Overview";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var task in ViewBag.TaskItems)
+{
+    <h3><a href="/Task1/Show/@task.TaskId">@task.Title</a></h3>
+    <p>@task.Description</p>
+    <p>Project ID: @task.ProjectId</p>
+    <p>Status: @task.Status</p>
+    <br />
+    @Html.ActionLink("Edit Task", "Edit", "TaskItem", new { id = task.TaskId })
+    @Html.ActionLink("Delete Task", "Delete", "TaskItem", new { id = task.TaskId })
+    <hr />
+    <br />
+}
+
+<a href="/Task1/New" class="btn">New Task</a>
+<br />
+
+
