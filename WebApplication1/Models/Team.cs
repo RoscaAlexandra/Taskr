@@ -19,10 +19,12 @@ namespace WebApplication1.Models
         [Required(ErrorMessage = "You must name your team")]
         public string Name { get; set; }
 
+        public IEnumerable<SelectListItem> Tasks { get; set; }
+
         //public string ProjectId { get; set; }
 
         //public IEnumerable<SelectListItem> Projects { get; set; }
 
-       // public IEnumerable<SelectListItem> Users { get; set; }
+        // public IEnumerable<SelectListItem> Users { get; set; }
     }
 }

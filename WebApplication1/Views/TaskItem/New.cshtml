@@ -35,18 +35,12 @@
     <br />
 
     <!--todo : change to display available project, also teams-->
-    @Html.Label("ProjectId", "Project ID")
-    <br />
-    @Html.TextArea("ProjectId", null, new { @class = "form-control" })
-    <br />
+    @Html.DropDownListFor(m => m.TeamId, new SelectList(Model.Teams, "Value", "Text"),
+    "Select team resposible for the task", new { @class = "form-control" })
 
     <label>Status:</label>
-    <select asp-for="TaskStatus">
-        <option value="Not started">Not started</option>
-        <option value="In progress">In progress</option>
-        <option value="Completed">Completed</option>
-    </select>
-
+    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text","Text"),
+ "Select status", new { @class = "form-control" })
 
     <br />
 

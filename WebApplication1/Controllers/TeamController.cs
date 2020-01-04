@@ -23,15 +23,35 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, Organizator")]
         public ActionResult Show(int id)
         {
             Team team = db.Teams.Find(id);
 
+            var selectList = new List<SelectListItem>();
+
+            // Extragem toate categoriile din baza de date
+            var tasks = from task in db.Tasks
+                        select task;
+        
+            foreach (var task in tasks)
+            {
+                if(task.TeamId == team.TeamId)
+                {
+                    selectList.Add(new SelectListItem
+                    {
+                        Value = task.TaskId.ToString(),
+                        Text = task.TaskTitle.ToString()
+                    });
+                }
+            }
+
+            team.Tasks = selectList;
+
             return View(team);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Organizator")]
         public ActionResult New()
         {
             Team team = new Team();
@@ -43,7 +63,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Organizator")]
         public ActionResult New(Team team)
         {
             UserStore<ApplicationUser> userStore = new UserStore<ApplicationUser>(db);
@@ -70,7 +90,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Organizator")]
         public ActionResult Edit(int id)
         {
             Team team = db.Teams.Find(id);
@@ -83,7 +103,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator,Organizator")]
         public ActionResult Edit(int id, Team requestTeam)
         {
             try
@@ -130,7 +150,7 @@ namespace WebApplication1.Controllers
             Team team = db.Teams.Find(id);
 
             if (User.IsInRole("Administrator"))
-            { 
+            {
                 db.Teams.Remove(team);
                 db.SaveChanges();
                 TempData["message"] = "Team deleted!";
@@ -189,7 +209,7 @@ namespace WebApplication1.Controllers
 
             // Extragem toate categoriile din baza de date
             var projects = from pr in db.Projects
-                             select pr;
+                           select pr;
 
             // iteram prin categorii
             foreach (var project in projects)

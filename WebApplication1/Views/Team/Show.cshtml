@@ -13,3 +13,13 @@
         <li>@member.UserName</li>
     }
 </ul>
+<!--<a href="/Task1/Index">Go to tasks overview</a>-->
+
+<h2>Task overview</h2>
+<ul>
+    @foreach (var task in Model.Tasks)
+    {
+        <a href="/Task1/Show/@task.Value">Task: @task.Text</a>
+        <br />
+    }
+</ul>

@@ -14,8 +14,8 @@
     <br /><br />
 
     @Html.LabelFor(x => x.Members)
-    <br/>
+    <br />
     @Html.ListBoxFor(x => x.MemberIds, new MultiSelectList(ViewBag.AllUsers, "Value", "Text"))
     <br /><br />
-    <button type="submit">Add Project</button>
+    <button type="submit">Save Team</button>
 }
