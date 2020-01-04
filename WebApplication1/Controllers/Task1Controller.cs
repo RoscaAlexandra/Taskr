@@ -23,6 +23,7 @@ namespace TotallyNotJira.Controllers
             return View(task);
 
         }
+        [Authorize(Roles = "Organizator,Administrator")]
         public ActionResult New()
         {
             Task1 task = new Task1();
@@ -44,12 +45,12 @@ namespace TotallyNotJira.Controllers
             });
             ViewBag.Statuses = selectList;
 
-            task.Teams = GetAllTeams();
+            task.Projects = GetAllProjects();
 
             return View(task);
            
         }
-
+        [Authorize(Roles = "Organizator,Administrator")]
         [HttpPost]
         public ActionResult New(Task1 task)
         {
@@ -97,7 +98,7 @@ namespace TotallyNotJira.Controllers
             });
             ViewBag.Statuses = selectList;
 
-            task.Teams = GetAllTeams();
+            task.Projects = GetAllProjects();
 
             return View(task);
         }
@@ -145,14 +146,14 @@ namespace TotallyNotJira.Controllers
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> GetAllTeams()
+        public IEnumerable<SelectListItem> GetAllProjects()
         {
             // generam o lista goala
             var selectList = new List<SelectListItem>();
 
             // Extragem toate categoriile din baza de date
-            var teams = from team in db.Teams
-                             select team;
+            var teams = from project in db.Projects
+                             select project;
 
             // iteram prin categorii
             foreach (var team in teams)
@@ -160,12 +161,12 @@ namespace TotallyNotJira.Controllers
                 // Adaugam in lista elementele necesare pentru dropdown
                 selectList.Add(new SelectListItem
                 {
-                    Value = team.TeamId.ToString(),
+                    Value = team.ProjectId.ToString(),
                     Text = team.Name.ToString()
                 });
             }
 
-            // returnam lista de categorii
+            // returnam lista de proiecte
             return selectList;
         }
 

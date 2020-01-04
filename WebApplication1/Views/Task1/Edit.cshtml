@@ -37,13 +37,13 @@
     <br />
     @Html.EditorFor(m => m.TaskEndDate, new { type = "date" })
     <br />
-    @Html.HiddenFor(m => m.TeamId)
+    @Html.HiddenFor(m => m.ProjectId)
     <br />
     @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text","Text"),
  "Select status", new { @class = "form-control" })
 
     <br />
-    @Html.DropDownListFor(m => m.TeamId, new SelectList(Model.Teams, "Value","Text"),
+    @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.Projects, "Value","Text"),
  "Select team", new { @class = "form-control" })
 
 

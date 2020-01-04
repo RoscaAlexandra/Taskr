@@ -33,18 +33,28 @@ namespace WebApplication1.Controllers
             // Extragem toate categoriile din baza de date
             var tasks = from task in db.Tasks
                         select task;
-        
-            foreach (var task in tasks)
+            // var projects = team.Projects;
+            var allProjects = from project in db.Projects
+                           select project;
+            var projects = new List<Project>();
+            foreach(var project in allProjects)
             {
-                if(task.TeamId == team.TeamId)
-                {
-                    selectList.Add(new SelectListItem
-                    {
-                        Value = task.TaskId.ToString(),
-                        Text = task.TaskTitle.ToString()
-                    });
-                }
+                if (project.TeamId == team.TeamId)
+                    projects.Add(project);
             }
+
+            foreach (var task in tasks)
+                foreach(var project in projects)
+                    {
+                        if(task.ProjectId == project.ProjectId)
+                        {
+                            selectList.Add(new SelectListItem
+                            {
+                                Value = task.TaskId.ToString(),
+                                Text = task.TaskTitle.ToString()
+                            });
+                        }
+                    }
 
             team.Tasks = selectList;
 

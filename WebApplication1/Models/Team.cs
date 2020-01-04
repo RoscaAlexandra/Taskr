@@ -23,7 +23,7 @@ namespace WebApplication1.Models
 
         //public string ProjectId { get; set; }
 
-        //public IEnumerable<SelectListItem> Projects { get; set; }
+        //public IEnumerable<Project> Projects { get; set; }
 
         // public IEnumerable<SelectListItem> Users { get; set; }
     }

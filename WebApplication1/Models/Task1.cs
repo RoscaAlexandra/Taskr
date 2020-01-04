@@ -25,11 +25,16 @@ namespace TotallyNotJira.Models
 
         public DateTime TaskEndDate { get; set; }
 
-        public int TeamId { get; set; }
+        //public int TeamId { get; set; }
+        public int ProjectId { get; set; }
 
-        public virtual Team Team { get; set; }
+        //public virtual Team Team { get; set; }
+        public virtual Project Project { get; set; }
 
-        public IEnumerable<SelectListItem> Teams { get; set; }
+        // public IEnumerable<SelectListItem> Teams { get; set; }
+
+        public IEnumerable<SelectListItem> Projects { get; set; }
+
         //public virtual ICollection<Comments> Comment { get; set; }
     }
     /*

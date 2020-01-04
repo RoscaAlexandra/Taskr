@@ -23,7 +23,7 @@ namespace TotallyNotJira.Models
 
 
         [Required(ErrorMessage = "You must add your project to a team")]
-        public string TeamId { get; set; }
+        public int TeamId { get; set; }
         public virtual Team Team { get; set; }
         // public virtual ICollection<Task> Task { get; set; }
         public IEnumerable<Team> Teams { get; set; }

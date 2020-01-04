@@ -35,8 +35,8 @@
     <br />
 
     <!--todo : change to display available project, also teams-->
-    @Html.DropDownListFor(m => m.TeamId, new SelectList(Model.Teams, "Value", "Text"),
-    "Select team resposible for the task", new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.Projects, "Value", "Text"),
+    "Select THE PROJECT ASSIGNED TO", new { @class = "form-control" })
 
     <label>Status:</label>
     @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text","Text"),
