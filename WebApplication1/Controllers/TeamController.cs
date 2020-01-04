@@ -39,7 +39,7 @@ namespace WebApplication1.Controllers
             var projects = new List<Project>();
             foreach(var project in allProjects)
             {
-                if (project.TeamId == team.TeamId)
+                if (project.TeamId == team.TeamId.ToString())
                     projects.Add(project);
             }
 

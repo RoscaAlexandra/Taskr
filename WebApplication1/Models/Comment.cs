@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using TotallyNotJira.Models;
+using WebApplication1.Models;
 
-namespace WebApplication1.Models
+namespace TotallyNotJira.Models
 {
     public class Comment
     {

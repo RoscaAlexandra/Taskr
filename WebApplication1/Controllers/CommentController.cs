@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
             {
                 ViewBag.message = TempData["message"].ToString();
             }
-            ViewBag.Projects = db.Projects.OrderBy(x => x.Name);
+            ViewBag.Comments = db.Comments.OrderBy(x => x.CommentId);
 
             return View();
         }
@@ -25,24 +25,24 @@ namespace WebApplication1.Controllers
         [Authorize(Roles = "Member,Organizator,Administrator")]
         public ActionResult New()
         {
-            Project project = new Project();
+            Comment comment = new Comment();
 
             ViewBag.Tasks = GetTasks();
 
-            return View(project);
+            return View(comment);
 
         }
 
         // POST: Project/Create
         [HttpPost]
         [Authorize(Roles = "Member, Organizator,Administrator")]
-        public ActionResult New(Task1 task)
+        public ActionResult New(Comment comment)
         {
             try
             {
                 //project.Team = db.Teams.Find(project.TeamId);
 
-                db.Tasks.Add(task);
+                db.Comments.Add(comment);
                 db.SaveChanges();
 
                 return RedirectToAction("Index");

@@ -33,6 +33,7 @@ namespace TotallyNotJira.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<Task1> Tasks { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

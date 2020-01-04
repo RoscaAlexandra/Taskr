@@ -17,34 +17,13 @@
     @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
     <br />
     <br />
-
-    @Html.Label("TaskDescription", "Description")
-    <br />
-    @Html.TextArea("TaskDescription", null, new { @class = "form-control" })
-    //@Html.ValidationMessage("Content", "", new { @class = "text-danger" })
-    <br />
-
-    @Html.Label("TaskStartDate", "Start Date")
-    <br />
-    @Html.TextBoxFor(m => m.TaskStartDate, new { type = "date" })
-    <br />
-
-    @Html.Label("TaskEndDate", "End Date")
-    <br />
-    @Html.TextBoxFor(m => m.TaskEndDate, new { type = "date" })
-    <br />
-
-    <!--todo : change to display available project, also teams-->
-    @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.Projects, "Value", "Text"),
-    "Select THE PROJECT ASSIGNED TO", new { @class = "form-control" })
-
-    <label>Status:</label>
-    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
- "Select status", new { @class = "form-control" })
+    <label>Task:</label>
+    @Html.DropDownListFor(m => m.TaskId, new SelectList(ViewBag.Tasks, "TaskId", "TaskTitle"),
+ "Select task", new { @class = "form-control" })
 
     <br />
 
-    <button class="btn btn-sm btn-success" type="submit">Save task</button>
+    <button class="btn btn-sm btn-success" type="submit">Add comment</button>
 }
 
 

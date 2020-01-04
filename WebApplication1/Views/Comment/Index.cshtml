@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Comments Overview";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var comment in ViewBag.Comments)
+{
+    <h3><a href="/Task1/Show/@comment.CommentId">@comment.CommentId</a></h3>
+    <p>@comment.Text</p>
+    <!--<p>Project ID: </p>-->
+    <p>Task assigned to: @comment.TaskId</p>
+    <!-- <br />
+     <a href="/Task1/Edit/ " class="btn">Edit Task</a>
+     <a href="/Task1/Delete/" class="btn">Delete Task</a>
+     <hr />
+     <br />-->
+}
+
+<a href="/Comment/New" class="btn">Add Comment</a>
+<br />
+
+

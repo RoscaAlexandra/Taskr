@@ -20,6 +20,16 @@ namespace TotallyNotJira.Controllers
         public ActionResult Show(int id)
         {
             Task1 task = db.Tasks.Find(id);
+
+            var comments = db.Comments;
+            var goodComments = new List<Comment>();
+            foreach(var comment in comments)
+            {
+                if (comment.TaskId == task.TaskId)
+                    goodComments.Add(comment);
+            }
+            ViewBag.Comments = goodComments;
+
             return View(task);
 
         }

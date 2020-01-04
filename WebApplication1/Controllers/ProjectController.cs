@@ -66,7 +66,7 @@ namespace TotallyNotJira.Controllers
                 ApplicationDbContext context = new ApplicationDbContext();
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                if (!User.IsInRole("Administrator"))
+                if (User.IsInRole("Member"))
                 {
                     UserManager.RemoveFromRole(project.UserId, "Member");
                     UserManager.AddToRole(project.UserId, "Organizator");
@@ -76,7 +76,7 @@ namespace TotallyNotJira.Controllers
             }
             catch
             {
-                return View();
+                return View(project);
             }
         }
         [Authorize(Roles = "Organizator,Administrator")]

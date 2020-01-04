@@ -27,7 +27,16 @@
         <br />
     </div>
 </div>
-
+<br />
+@foreach (var comment in ViewBag.Comments)
+{
+    <p>@comment.Text</p>
+    <br />
+    <a href="/Comment/Edit/@comment.CommentId" class="btn">Edit Comment</a>
+    <a href="/Task1/Delete/@comment.CommentId" class="btn">Delete Comment</a>
+    <hr />
+    <br />
+}
 
 <br />
 <hr />
