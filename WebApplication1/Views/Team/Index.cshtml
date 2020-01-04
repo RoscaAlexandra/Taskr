@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Team Explorer";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var team in ViewBag.Teams)
+{
+    <h3><a href="/Team/Show/@team.TeamId">@team.Name</a></h3>
+}
+
+<a href="/Team/New" class="btn">Add Team</a>
+<br />

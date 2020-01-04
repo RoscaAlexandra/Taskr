@@ -1,0 +1,15 @@
+﻿@model WebApplication1.Models.Team
+
+@{
+    ViewBag.Title = "Show";
+}
+
+<h2>@Model.Name</h2>
+
+<h3>Members</h3>
+<ul>
+    @foreach (var member in Model.Members)
+    {
+        <li>@member.UserName</li>
+    }
+</ul>
