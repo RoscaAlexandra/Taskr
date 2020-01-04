@@ -36,23 +36,14 @@ namespace WebApplication1.Controllers
         // POST: Project/Create
         [HttpPost]
         [Authorize(Roles = "Member, Organizator,Administrator")]
-        public ActionResult New(Project project)
+        public ActionResult New(Task1 task)
         {
             try
             {
                 //project.Team = db.Teams.Find(project.TeamId);
 
-                db.Projects.Add(project);
+                db.Tasks.Add(task);
                 db.SaveChanges();
-
-                ApplicationDbContext context = new ApplicationDbContext();
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                if (!User.IsInRole("Administrator"))
-                {
-                    UserManager.RemoveFromRole(project.UserId, "Member");
-                    UserManager.AddToRole(project.UserId, "Organizator");
-                }
 
                 return RedirectToAction("Index");
             }
@@ -60,6 +51,31 @@ namespace WebApplication1.Controllers
             {
                 return View();
             }
+        }
+
+        [NonAction]
+        public IEnumerable<Task1> GetTasks()
+        {
+            // generam o lista goala
+            var selectList = new List<Task1>();
+
+            // Extragem toate categoriile din baza de date
+            var teams = from team in db.Tasks
+                        select team;
+
+            // iteram prin categorii
+            foreach (var team in teams)
+            {
+                // Adaugam in lista elementele necesare pentru dropdown
+                selectList.Add(new Task1
+                {
+                    TaskId = team.TaskId,
+                    TaskTitle = team.TaskTitle.ToString()
+                });
+            }
+
+            // returnam lista de categorii
+            return selectList;
         }
     }
 }
