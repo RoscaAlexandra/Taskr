@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Display task details";
+    ViewBag.None = "None";
 }
 
 <h1>@ViewBag.Title</h1>
@@ -14,14 +15,18 @@
         @Model.TaskDescription
     </div>
     <br />
-    <div><strong>Start date: </strong></div>
+    <div class="form-inline"><strong>Start date: </strong></div>
     <div>@Model.TaskStartDate.ToString("MM/dd/yyyy") </div>
     <br />
-    <div><strong>End date:</strong></div>
+    <div class="form-inline"><strong>End date:</strong></div>
     <div>@Model.TaskEndDate.ToString("MM/dd/yyyy") </div>
     <br />
     <div><strong> Status: </strong>@Model.TaskStatus </div>
-
+    <br />
+    <div><strong> Responsable member of the team: </strong>@if(Model.Member != null && Model.Member.UserName != "") {@Model.Member.UserName}
+    else { @ViewBag.None; }
+    </div>
+    <br />
     <div class="panel-footer">
         <a class="btn" href="/Task1/Edit/@Model.TaskId">Edit task</a>
         <br />
@@ -33,11 +38,12 @@
     <p>@comment.Text</p>
     <br />
     <a href="/Comment/Edit/@comment.CommentId" class="btn">Edit Comment</a>
-    <a href="/Task1/Delete/@comment.CommentId" class="btn">Delete Comment</a>
+    <a href="/Comment/Delete/@comment.CommentId" class="btn">Delete Comment</a>
     <hr />
     <br />
 }
 
+<a class="btn" href="/Comment/New/@Model.TaskId">Add a comment on this task</a>
 <br />
 <hr />
 <a class="btn btn-success" href="/Task1/Index">Go back to overview</a>

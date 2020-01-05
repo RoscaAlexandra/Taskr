@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using WebApplication1.Models;
 
 namespace TotallyNotJira.Models
@@ -22,11 +23,11 @@ namespace TotallyNotJira.Models
         public virtual ApplicationUser User { get; set; }
 
 
-        [Required(ErrorMessage = "You must add your project to a team")]
+       // [Required(ErrorMessage = "You must add your project to a team")]
         public string TeamId { get; set; }
         public virtual Team Team { get; set; }
         // public virtual ICollection<Task> Task { get; set; }
-        public IEnumerable<Team> Teams { get; set; }
+        public IEnumerable<SelectListItem> Teams { get; set; }
 
     }
     /*

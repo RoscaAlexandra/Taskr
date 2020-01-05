@@ -39,11 +39,16 @@
     "Select THE PROJECT ASSIGNED TO", new { @class = "form-control" })
 
     <label>Status:</label>
-    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text","Text"),
+    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
  "Select status", new { @class = "form-control" })
 
     <br />
+    <br />
+    <!--  <label>Member assiged to:</label>-->
+    //  @Html.DropDownListFor(m => m.MemberId, new SelectList(ViewBag.Users, "Value", "Text"),
+    // "Select member", new { @class = "form-control" })
 
+    <br />
     <button class="btn btn-sm btn-success" type="submit">Save task</button>
 }
 

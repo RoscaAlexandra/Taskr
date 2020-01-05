@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TotallyNotJira.Models;
+using WebApplication1.Models;
 
 namespace TotallyNotJira.Controllers
 {
@@ -29,6 +30,10 @@ namespace TotallyNotJira.Controllers
                     goodComments.Add(comment);
             }
             ViewBag.Comments = goodComments;
+
+            
+            
+           // ViewBag.Members = GetAllUsers();
 
             return View(task);
 
@@ -57,6 +62,8 @@ namespace TotallyNotJira.Controllers
 
             task.Projects = GetAllProjects();
 
+           
+
             return View(task);
            
         }
@@ -68,6 +75,9 @@ namespace TotallyNotJira.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var projectId = task.ProjectId;
+                    task.Project = db.Projects.Find(projectId);
+
                     db.Tasks.Add(task);
                     db.SaveChanges();
                     TempData["message"] = "Task added!";
@@ -110,6 +120,21 @@ namespace TotallyNotJira.Controllers
 
             task.Projects = GetAllProjects();
 
+            Project project = db.Projects.Find(task.ProjectId);
+            Team team = db.Teams.Find(Int32.Parse(project.TeamId));
+            var members = team.Members;
+
+            var members1 = new List<SelectListItem>();
+            foreach (var member in members)
+            {
+                members1.Add(new SelectListItem
+                {
+                    Value = member.Id.ToString(),
+                    Text = member.UserName.ToString()
+                });
+            }
+            ViewBag.Members = members1;
+
             return View(task);
         }
 
@@ -129,10 +154,13 @@ namespace TotallyNotJira.Controllers
                         task.TaskStartDate = requiredTask.TaskStartDate;
                         task.TaskEndDate = requiredTask.TaskEndDate;
                         task.TaskStatus = requiredTask.TaskStatus;
+                        task.MemberId = requiredTask.MemberId;
+                        task.Member = db.Users.Find(requiredTask.MemberId);
                         db.SaveChanges();
+                        id = task.TaskId;
                     }
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Show","Task1",new { id });
                 }
                 else
                 {
@@ -180,6 +208,25 @@ namespace TotallyNotJira.Controllers
             return selectList;
         }
 
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllUsers()
+        {
+            var selectList = new List<SelectListItem>();
+
+            var users = db.Users.ToList();
+
+            foreach (var user in users)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = user.Id.ToString(),
+                    Text = user.UserName.ToString()
+                });
+            }
+
+            return selectList;
+        }
+ 
     }
 
 }

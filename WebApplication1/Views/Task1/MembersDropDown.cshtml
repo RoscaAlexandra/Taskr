@@ -1,0 +1,5 @@
+﻿@model TotallyNotJira.Models.Task1
+
+@Html.DropDownListFor(m => m.MemberId, new SelectList(ViewBag.Members, "Value", "Text"),
+ "Assign to a member", new { @class = "form-inline" })
+@Html.ActionLink("Assign", "SaveMember", "Task1",Model.TaskId, Model)

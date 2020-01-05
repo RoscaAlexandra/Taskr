@@ -19,7 +19,12 @@
 <ul>
     @foreach (var task in Model.Tasks)
     {
-        <a href="/Task1/Show/@task.Value">Task: @task.Text</a>
+        <div class="panel-heading">
+             <a href="/Task1/Show/@task.Value">Task @task.Text</a>
+        </div>
+        <div class="panel-footer"></div>
         <br />
+        <br />
+
     }
 </ul>

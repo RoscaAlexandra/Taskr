@@ -36,6 +36,10 @@ namespace TotallyNotJira.Models
         public IEnumerable<SelectListItem> Projects { get; set; }
 
         //public virtual ICollection<Comments> Comment { get; set; }
+
+        public virtual ApplicationUser Member { get; set; }
+
+        public virtual string MemberId { get; set; }
     }
     /*
     public class TaskDBContext : DbContext

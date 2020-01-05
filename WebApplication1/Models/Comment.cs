@@ -17,5 +17,9 @@ namespace TotallyNotJira.Models
 
         public int TaskId { get; set; }
         public virtual Task1 Task { get; set; }
+
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

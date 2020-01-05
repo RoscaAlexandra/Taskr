@@ -39,17 +39,18 @@
     <br />
     @Html.HiddenFor(m => m.ProjectId)
     <br />
-    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text","Text"),
+    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
  "Select status", new { @class = "form-control" })
 
     <br />
-    @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.Projects, "Value","Text"),
+    @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.Projects, "Value", "Text"),
  "Select team", new { @class = "form-control" })
 
 
     <br />
     <br />
-
+    @Html.DropDownListFor(m => m.MemberId, new SelectList(ViewBag.Members, "Value", "Text"),
+ "Assign to a member", new { @class = "form-inline" })
 
     <button class="btn btn-sm btn-success" type="submit">Save changes</button>
 }

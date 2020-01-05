@@ -12,6 +12,8 @@
 
     @Html.HiddenFor(x => x.ProjectId)
 
+    //@Html.HiddenFor(x => x.Team)
+
     @Html.LabelFor(x => x.Name, "What would you call this project?")
     <br />
     @Html.EditorFor(x => x.Name)
@@ -28,10 +30,13 @@
     @Html.LabelFor(x => x.TeamId)
     <br />
     //@Html.DropDownListFor(x => x.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"), "---Select a value---", new { htmlAttributes = new { @class = "form-control" } })
-    @Html.DropDownListFor(m => m.TeamId, new SelectList(Model.Teams, "TeamId", "Name"),
-    "Select team id", new { @class = "form-control" })
+    //@Html.DropDownListFor(m => m.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"),
+    //"Select team id", new { @class = "form-control" })
+    //@Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
 
-    @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
+
+    @Html.DropDownListFor(x => x.TeamId, new SelectList(Model.Teams, "Value", "Text"), "---Select a value---", new { htmlAttributes = new { @class = "form-control" } })
+
     <br />
     <br />
     <button type="submit">Add Project</button>

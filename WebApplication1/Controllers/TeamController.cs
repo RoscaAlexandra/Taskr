@@ -52,6 +52,7 @@ namespace WebApplication1.Controllers
                             {
                                 Value = task.TaskId.ToString(),
                                 Text = task.TaskTitle.ToString()
+
                             });
                         }
                     }
@@ -81,10 +82,13 @@ namespace WebApplication1.Controllers
 
             team.Members = new List<ApplicationUser>();
 
-            foreach (var memberId in team.MemberIds)
+            if (team.MemberIds != null)
             {
-                var member = userManager.FindById(memberId);
-                team.Members.Add(member);
+                foreach (var memberId in team.MemberIds)
+                {
+                    var member = userManager.FindById(memberId);
+                    team.Members.Add(member);
+                }
             }
 
             try

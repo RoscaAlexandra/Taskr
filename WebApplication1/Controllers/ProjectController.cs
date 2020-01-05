@@ -40,12 +40,14 @@ namespace TotallyNotJira.Controllers
         {
             Project project = new Project();
 
-            project.Teams = GetTeams();
+           // project.Teams = GetTeams();
             // Preluam ID-ul utilizatorului curent
             project.UserId = User.Identity.GetUserId();
             project.UserName = User.Identity.GetUserName();
+            project.User = db.Users.Find(project.UserId);
 
             ViewBag.Teams = GetTeams();
+            project.Teams = GetTeams();
 
             return View(project);
 
@@ -58,24 +60,35 @@ namespace TotallyNotJira.Controllers
         {
             try
             {
-                //project.Team = db.Teams.Find(project.TeamId);
-
-                db.Projects.Add(project);
-                db.SaveChanges();
-
-                ApplicationDbContext context = new ApplicationDbContext();
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                if (User.IsInRole("Member"))
+                if (ModelState.IsValid)
                 {
-                    UserManager.RemoveFromRole(project.UserId, "Member");
-                    UserManager.AddToRole(project.UserId, "Organizator");
-                }
+                    project.Team = db.Teams.Find(Int32.Parse(project.TeamId));
 
-                return RedirectToAction("Index");
+                    project.Teams = GetTeams();
+                    db.Projects.Add(project);
+                    db.SaveChanges();
+
+                    ApplicationDbContext context = new ApplicationDbContext();
+                    var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+                    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                    if (User.IsInRole("Member"))
+                    {
+                        UserManager.RemoveFromRole(project.UserId, "Member");
+                        UserManager.AddToRole(project.UserId, "Organizator");
+                    }
+
+                   // project.Teams = GetTeams();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    project.Teams = GetTeams();
+                    return View(project);
+                }
             }
-            catch
+            catch (Exception e)
             {
+                project.Teams = GetTeams();
                 return View(project);
             }
         }
@@ -84,6 +97,7 @@ namespace TotallyNotJira.Controllers
         {
             Project project = db.Projects.Find(id);
             ViewBag.Project = project;
+            ViewBag.Teams = GetTeams();
             project.Teams = GetTeams();
             if (project.UserId == User.Identity.GetUserId() || User.IsInRole("Administrator"))
             {
@@ -159,27 +173,27 @@ namespace TotallyNotJira.Controllers
         }
 
         [NonAction]
-        public IEnumerable<Team> GetTeams()
+        public IEnumerable<SelectListItem> GetTeams()
         {
             // generam o lista goala
-            var selectList = new List<Team>();
+            var selectList = new List<SelectListItem>();
 
-            // Extragem toate categoriile din baza de date
+            // Extragem toate echipele din baza de date
             var teams = from team in db.Teams
                              select team;
 
-            // iteram prin categorii
+            // iteram prin echipe
             foreach (var team in teams)
             {
                 // Adaugam in lista elementele necesare pentru dropdown
-                selectList.Add(new Team
+                selectList.Add(new SelectListItem
                 {
-                    TeamId = team.TeamId,
-                    Name = team.Name.ToString()
+                    Value = team.TeamId.ToString(),
+                    Text = team.Name.ToString()
                 });
             }
 
-            // returnam lista de categorii
+            // returnam lista de echipe
             return selectList;
         }
     }

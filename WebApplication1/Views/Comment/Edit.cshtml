@@ -1,0 +1,32 @@
+﻿@model TotallyNotJira.Models.Comment
+
+@{
+    ViewBag.Titlu = "Edit Comment";
+}
+
+<h2>@ViewBag.Titlu</h2>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Comment"))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.HiddenFor(m => m.CommentId)
+    <br />
+    @Html.Label("Text", "")
+    <br />
+    @Html.Editor("Text")
+    //@Html.ValidationMessageFor(m => m.TaskTitle, "", new { @class = "text-danger" })
+    <br />
+    <br />
+
+    <!--todo--member id change-->
+
+    <br />
+    <br />
+
+
+    <button class="btn btn-sm btn-success" type="submit">Save changes</button>
+}
+
+
+
