@@ -19,18 +19,44 @@ namespace WebApplication1.Controllers
         {
             var teams = db.Teams.Include("Project");
 
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
+
             ViewBag.Teams = db.Teams.OrderBy(x => x.Name);
             return View();
         }
 
-        [Authorize(Roles = "Administrator, Organizator")]
+        [Authorize(Roles = "Member,Administrator, Organizator")]
         public ActionResult Show(int id)
         {
+
             Team team = db.Teams.Find(id);
+
+            var members = team.Members;
+            var ids = new List<string>();
+            foreach(var member in members)
+            {
+                ids.Add(member.Id);
+            }
+            var ok = 0;
+            if (User.IsInRole("Administrator")) ok = 1;
+            foreach(var Id in ids)
+            {
+                if (Id == User.Identity.GetUserId())
+                    ok = 1;
+            }
+            if (ok == 0)
+            {
+                TempData["message"] = "You can not see details about this team!";
+                return RedirectToAction("Index");
+            }
+           
 
             var selectList = new List<SelectListItem>();
 
-            // Extragem toate categoriile din baza de date
+            // Extragem toate taskurile din baza de date
             var tasks = from task in db.Tasks
                         select task;
             // var projects = team.Projects;
@@ -80,17 +106,17 @@ namespace WebApplication1.Controllers
             UserStore<ApplicationUser> userStore = new UserStore<ApplicationUser>(db);
             ApplicationUserManager userManager = new ApplicationUserManager(userStore);
 
-            team.Members = new List<ApplicationUser>();
+            var members = new List<ApplicationUser>();
 
             if (team.MemberIds != null)
             {
                 foreach (var memberId in team.MemberIds)
                 {
                     var member = userManager.FindById(memberId);
-                    team.Members.Add(member);
+                    members.Add(member);
                 }
             }
-
+            team.Members = members;
             try
             {
                 db.Teams.Add(team);

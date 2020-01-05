@@ -93,8 +93,8 @@ namespace TotallyNotJira.Controllers
                 return View(task);
             }
         }
-
-       public ActionResult Edit(int id)
+        [Authorize(Roles = "Organizator,Administrator")]
+        public ActionResult Edit(int id)
         {
             Task1 task = db.Tasks.Find(id);
             ViewBag.Task = task;
@@ -139,6 +139,7 @@ namespace TotallyNotJira.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Organizator,Administrator")]
         public ActionResult Edit(int id, Task1 requiredTask)
         {
             try
@@ -173,7 +174,7 @@ namespace TotallyNotJira.Controllers
             }
         }
 
- 
+        [Authorize(Roles = "Organizator,Administrator")]
         public ActionResult Delete(int id)
         {
             Task1 task = db.Tasks.Find(id);

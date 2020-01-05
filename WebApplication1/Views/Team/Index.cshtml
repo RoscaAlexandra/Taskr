@@ -1,8 +1,12 @@
 ﻿@{
     ViewBag.Title = "Team Explorer";
 }
-
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-info" role="alert">@ViewBag.message</h3>
+}
 <h2>@ViewBag.Title</h2>
+
 
 @foreach (var team in ViewBag.Teams)
 {
