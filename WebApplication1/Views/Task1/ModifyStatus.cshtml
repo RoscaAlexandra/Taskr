@@ -1,0 +1,23 @@
+﻿@model TotallyNotJira.Models.Task1
+
+@{
+    ViewBag.Titlu = "Modify Status";
+}
+
+<h2>@ViewBag.Titlu</h2>
+
+@using (Html.BeginForm(actionName: "ModifyStatus", controllerName: "Task1"))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    <br />
+    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
+ "Select status", new { @class = "form-control" })
+
+
+
+    <button class="btn btn-sm btn-success" type="submit">Save changes</button>
+}
+
+
+

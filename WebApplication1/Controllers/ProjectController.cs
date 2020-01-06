@@ -14,7 +14,8 @@ namespace TotallyNotJira.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Project
-        [Authorize(Roles = "Member,Organizator,Administrator")]
+        // [Authorize(Roles = "Member,Organizator,Administrator")]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Index()
         {
             var projects = db.Projects.Include("Teams").Include("User");

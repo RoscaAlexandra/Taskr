@@ -3,7 +3,10 @@
 <div class="page-header">
     <h1>@Model.Name <small>Team</small></h1>
 </div>
-
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-info" role="alert">@ViewBag.message</h3>
+}
 <div class="row">
     <div class="col-md-8">
         <div class="panel panel-default">

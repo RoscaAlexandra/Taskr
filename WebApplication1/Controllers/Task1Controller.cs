@@ -77,11 +77,14 @@ namespace TotallyNotJira.Controllers
                 {
                     var projectId = task.ProjectId;
                     task.Project = db.Projects.Find(projectId);
-
+                    var id = Int32.Parse(task.Project.TeamId); 
                     db.Tasks.Add(task);
                     db.SaveChanges();
                     TempData["message"] = "Task added!";
-                    return RedirectToAction("Index");
+
+                     return RedirectToAction("Show","Team",new { id,TempData});
+                    //return new RedirectResult(@"~\Team\Show\" + id);
+
                 }
                 else
                 {
@@ -208,7 +211,48 @@ namespace TotallyNotJira.Controllers
             // returnam lista de proiecte
             return selectList;
         }
+        [Authorize(Roles = "Member,Organizator,Administrator")]
+        public ActionResult ModifyStatus(int id)
+        {
+            Task1 task = db.Tasks.Find(id);
 
+            var selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem
+            {
+                Value = "1",
+                Text = "Not started"
+            });
+            selectList.Add(new SelectListItem
+            {
+                Value = "2",
+                Text = "In progress"
+            });
+            selectList.Add(new SelectListItem
+            {
+                Value = "3",
+                Text = "Done"
+            });
+            ViewBag.Statuses = selectList;
+
+            return View(task);
+        }
+        [HttpPut]
+        public ActionResult ModifyStatus(int id, Task1 requiredTask)
+        {
+            try
+            {
+                 Task1 task = db.Tasks.Find(id);
+                 task.TaskStatus = requiredTask.TaskStatus; 
+                 db.SaveChanges();
+                 id = task.TaskId;
+                 return RedirectToAction("Show","Task1",new { id });
+            }
+            catch
+            {
+                return View();
+            }
+           
+        }
         [NonAction]
         public IEnumerable<SelectListItem> GetAllUsers()
         {

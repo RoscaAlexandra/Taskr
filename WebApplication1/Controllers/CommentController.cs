@@ -45,6 +45,9 @@ namespace WebApplication1.Controllers
                 // comment.TaskId = TaskId;
                 comment.Task = db.Tasks.Find(id);
                 comment.TaskId = id;
+                comment.UserId = User.Identity.GetUserId();
+                comment.UserName = User.Identity.GetUserName();
+                comment.User = db.Users.Find(comment.UserId);
                 db.Comments.Add(comment);
                 db.SaveChanges();
 
@@ -69,7 +72,8 @@ namespace WebApplication1.Controllers
             else
             {
                 TempData["message"] = "You can not modify this comment!";
-                return RedirectToAction("Index");
+                var idd = comment.TaskId;
+                return RedirectToAction("Show", "Task1", new { id = idd });
             }
 
         }
@@ -93,12 +97,14 @@ namespace WebApplication1.Controllers
                             db.SaveChanges();
                             TempData["message"] = "Comment edited!";
                         }
-                        return RedirectToAction("Index");
+                        var idd = comment.TaskId;
+                        return RedirectToAction("Show", "Task1", new { id=idd });
                     }
                     else
                     {
                         TempData["message"] = "You can not modify this comment!";
-                        return RedirectToAction("Index");
+                        var idd = comment.TaskId;
+                        return RedirectToAction("Show", "Task1", new { id=idd });
                     }
 
                 }
@@ -119,18 +125,19 @@ namespace WebApplication1.Controllers
         public ActionResult Delete(int id)
         {
             Comment comment = db.Comments.Find(id);
+            var idd = comment.TaskId;
             if (comment.UserId == User.Identity.GetUserId() ||
             User.IsInRole("Administrator"))
             {
                 db.Comments.Remove(comment);
                 db.SaveChanges();
                 TempData["message"] = "Comment deleted!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Show", "Task1", new { id = idd });
             }
             else
             {
                 TempData["message"] = "You can not delete that comment!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Show","Task1",new { id = idd});
             }
         }
 

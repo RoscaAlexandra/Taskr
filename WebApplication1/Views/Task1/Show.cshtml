@@ -6,7 +6,10 @@
 }
 
 <h1>@ViewBag.Title</h1>
-
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-info" role="alert">@TempData["message"]</h3>
+}
 
 <div class="panel panel-default">
 
@@ -23,12 +26,17 @@
     <br />
     <div><strong> Status: </strong>@Model.TaskStatus </div>
     <br />
-    <div><strong> Responsable member of the team: </strong>@if(Model.Member != null && Model.Member.UserName != "") {@Model.Member.UserName}
-    else { @ViewBag.None; }
+    <div>
+        <strong> Responsable member of the team: </strong>@if (Model.Member != null && Model.Member.UserName != "")
+        {@Model.Member.UserName}
+    else
+    { @ViewBag.None;
+}
     </div>
     <br />
     <div class="panel-footer">
         <a class="btn" href="/Task1/Edit/@Model.TaskId">Edit task</a>
+        <a class="btn" href="/Task1/ModifyStatus/@Model.TaskId">Edit status</a>
         <br />
     </div>
 </div>
@@ -36,6 +44,8 @@
 @foreach (var comment in ViewBag.Comments)
 {
     <p>@comment.Text</p>
+    <br />
+    <p>Added by @comment.UserName</p>
     <br />
     <a href="/Comment/Edit/@comment.CommentId" class="btn">Edit Comment</a>
     <a href="/Comment/Delete/@comment.CommentId" class="btn">Delete Comment</a>
