@@ -6,16 +6,20 @@
 {
     @Html.HiddenFor(x => x.TeamId)
 
-    @Html.LabelFor(x => x.Name, "Enter a team name")
-    <br />
-    @Html.EditorFor(x => x.Name)
-    @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name, "Team Name")
+        @Html.EditorFor(x => x.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+    </div>
 
-    <br /><br />
+    <div class="form-group">
+        @Html.LabelFor(x => x.Members)
+        @Html.ListBoxFor(x => x.MemberIds, new MultiSelectList(ViewBag.AllUsers, "Value", "Text"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.MemberIds, null, new { @class = "text-danger" })
+    </div>
 
-    @Html.LabelFor(x => x.Members)
-    <br />
-    @Html.ListBoxFor(x => x.MemberIds, new MultiSelectList(ViewBag.AllUsers, "Value", "Text"))
-    <br /><br />
-    <button type="submit">Save Team</button>
+    <div class="btn-group" role="group">
+        <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-ok"></span>&nbsp;Create Team</button>
+        <a href="/Team/Index" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>&nbsp;Discard</a>
+    </div>
 }

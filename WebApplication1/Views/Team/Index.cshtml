@@ -7,11 +7,14 @@
 }
 <h2>@ViewBag.Title</h2>
 
+<div class="list-group">
+    @foreach (var team in ViewBag.Teams)
+    {
+        <a href="/Team/Show/@team.TeamId" class="list-group-item">
+            <h4 class="mb-1">@team.Name</h4>
+        </a>
+    }
+</div>
 
-@foreach (var team in ViewBag.Teams)
-{
-    <h3><a href="/Team/Show/@team.TeamId">@team.Name</a></h3>
-}
-
-<a href="/Team/New" class="btn">Add Team</a>
+<a href="/Team/New" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add Team</a>
 <br />

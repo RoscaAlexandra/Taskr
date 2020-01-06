@@ -5,26 +5,63 @@
 }
 
 <h2>@Model.Name</h2>
+<h6 class="subtitle">Team</h6>
+<hr />
 
-<h3>Members</h3>
-<ul>
-    @foreach (var member in Model.Members)
-    {
-        <li>@member.UserName</li>
-    }
-</ul>
-<!--<a href="/Task1/Index">Go to tasks overview</a>-->
-
-<h2>Task overview</h2>
-<ul>
-    @foreach (var task in Model.Tasks)
-    {
-        <div class="panel-heading">
-             <a href="/Task1/Show/@task.Value">Task @task.Text</a>
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Task overview</h4>
+            </div>
+            <div class="panel-body">
+                @foreach (var task in ViewBag.Tasks)
+                {
+                    switch (task.TaskStatus)
+                    {
+                        case "Not started":
+                            <a href="/Task1/Show/@task.TaskId" class="list-group-item">
+                                <span class="label label-primary pull-right">@task.TaskStatus</span>
+                                @task.TaskTitle
+                            </a>
+                            break;
+                        case "In progress":
+                            <a href="/Task1/Show/@task.TaskId" class="list-group-item list-group-item-info">
+                                <span class="label label-info pull-right">@task.TaskStatus</span>
+                                @task.TaskTitle
+                            </a>
+                            break;
+                        case "Done":
+                            <a href="/Task1/Show/@task.TaskId" class="list-group-item list-group-item-success">
+                                <span class="label label-success pull-right">@task.TaskStatus</span>
+                                @task.TaskTitle
+                            </a>
+                            break;
+                    }
+                }
+            </div>
         </div>
-        <div class="panel-footer"></div>
-        <br />
-        <br />
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Members</h4>
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    @foreach (var member in Model.Members)
+                    {
+                        <div class="list-group-item">
+                            @member.UserName
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    }
-</ul>
+<div class="btn-group" role="group">
+    <a href="/Team/Edit/@Model.TeamId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Team</a>
+    <a href="/Team/Delete/@Model.TeamId" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Team</a>
+</div>
