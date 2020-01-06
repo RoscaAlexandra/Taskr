@@ -25,3 +25,13 @@ textarea {
 .hidden{
     display: none;
 }
+
+.subtitle {
+    color: rgba(0, 0, 0, 0.33);
+    text-transform: uppercase;
+    letter-spacing: .25em;
+}
+
+.subtitle + hr {
+    margin-top: 0;
+}

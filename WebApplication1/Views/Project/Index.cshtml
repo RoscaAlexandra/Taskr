@@ -1,28 +1,42 @@
 ﻿@model TotallyNotJira.Models.Project
 @{
-    ViewBag.Title = "Projects Overview";
+    ViewBag.Title = "Project Explorer";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="page-header">
+    <h1>@ViewBag.Title</h1>
+</div>
 
 @if (TempData.ContainsKey("message"))
 {
     <h3 class="alert alert-info" role="alert">@ViewBag.message</h3>
 }
 
-@foreach (var project in ViewBag.Projects)
-{
-    <h3><a href="/Project/Show/@project.ProjectId">@project.Name</a></h3>
-    <p>@project.Description</p>
-    <br />
-    <i class="glyphicon glyphicon-user"></i> <i>created by</i> @project.User.UserName
+ <div class="row">
+    @foreach (var project in ViewBag.Projects)
+    {
+        <div class="col-sm-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="/Project/Show/@project.ProjectId"><h3 class="panel-title">@project.Name</h3></a>
+                </div>
+                <div class="panel-body">
+                    <p>@project.Description</p>
 
-    <br />
-    <a href="/Project/Edit/@project.ProjectId" class="btn">Edit Project</a>
-    <a href="/Project/Delete/@project.ProjectId" class="btn">Delete Project</a>
-    <hr />
-    <br />
-}
+                    <p><small><i>created by</i> <i class="glyphicon glyphicon-user"></i>@project.User.UserName</small></p>
 
-<a href="/Project/New" class="btn">New Project</a>
-<br />
+                    @using (Html.BeginForm(actionName: "Delete", controllerName: "Project", method: FormMethod.Post, routeValues: new { id = project.ProjectId }))
+                    {
+                        <div class="btn-group" role="group">
+                            <a href="/Project/Edit/@project.ProjectId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span></a>
+                            @Html.HttpMethodOverride(HttpVerbs.Delete)
+                            <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<a href="/Project/New" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>&nbsp;Create Project</a>

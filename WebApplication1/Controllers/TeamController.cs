@@ -57,8 +57,7 @@ namespace WebApplication1.Controllers
             var selectList = new List<Task1>();
 
             // Extragem toate taskurile din baza de date
-            var tasks = from task in db.Tasks
-                        select task;
+            var tasks = db.Tasks.OrderByDescending(x => x.TaskStatus);
             // var projects = team.Projects;
             var allProjects = from project in db.Projects
                            select project;

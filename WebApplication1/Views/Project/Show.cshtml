@@ -4,38 +4,19 @@
     ViewBag.Title = "Show";
 }
 
-<h1>Project @Model.ProjectId details</h1>
-
-
-<div class="panel panel-default">
-
-    <div class="panel-heading">@Model.Name</div>
-    <div class="panel-body">
-        @Model.Description
-    </div>
-
-    <div class="panel-footer">
-        <a class="btn btn-success" href="/Project/Edit/@Model.ProjectId">Edit project</a>
-        <br />
-    </div>
+<div class="page-header">
+    <h1>@Model.Name <small>Project</small></h1>
 </div>
 
+<p>@Model.Description</p>
+
+<p><small><i>created by</i> <i class="glyphicon glyphicon-user"></i>@Model.User.UserName</small></p>
 
 @using (Html.BeginForm(actionName: "Delete", controllerName: "Project", method: FormMethod.Post, routeValues: new { id = @Model.ProjectId }))
 {
-    <!--@Html.HiddenFor(m => m.ProjectId) -->
-
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <br />
-    <button class="btn btn-success" type="submit">Delete project</button>
-
+    <div class="btn-group" role="group">
+        <a href="/Project/Edit/@Model.ProjectId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Project</a>
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Project</button>
+    </div>
 }
-
-<br />
-<hr />
-<a class="btn btn-success" href="/Project/Index">Go back to overview</a>
-
-
-
-
-

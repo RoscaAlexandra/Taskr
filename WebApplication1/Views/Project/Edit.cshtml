@@ -1,42 +1,37 @@
 ﻿@model TotallyNotJira.Models.Project
 
-@{
-    ViewBag.Titlu = "Edit Project";
-}
 
-<h2>@ViewBag.Titlu</h2>
+<div class="page-header">
+    <h1>Edit @Model.Name <small>Project</small></h1>
+</div>
 
 @using (Html.BeginForm(actionName: "Edit", controllerName: "Project"))
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
-    @Html.HiddenFor(m => m.ProjectId)
-    <br />
-    @Html.Label("Name", "Project Name")
-    <br />
-    @Html.Editor("Name")
-    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-    <br />
-    <br />
+    @Html.HiddenFor(m => m.UserId)
+    @Html.HiddenFor(x => x.ProjectId)
 
-    @Html.Label("Description", "Project Description")
-    <br />
-    @Html.EditorFor(m => m.Description)
-    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-    <br />
-    <br />
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name, "Name")
+        @Html.EditorFor(x => x.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+    </div>
 
-    @Html.LabelFor(x => x.TeamId)
-    <br />
-    //  @Html.DropDownListFor(x => x.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"))
+    <div class="form-group">
+        @Html.LabelFor(x => x.Description, "Description")
+        @Html.EditorFor(x => x.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+    </div>
 
-    @Html.DropDownListFor(m => m.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"),
-    "Select team id", new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
-    <br />
-    <br />
+    <div class="form-group">
+        @Html.LabelFor(x => x.TeamId)
+        @Html.DropDownListFor(x => x.TeamId, new SelectList(Model.Teams, "Value", "Text"), "---Select a team---", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.TeamId, null, new { @class = "text-danger" })
+    </div>
 
-
-    <button class="btn btn-sm btn-success" type="submit">Save changes</button>
+    <div class="btn-group" role="group">
+        <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-ok"></span>&nbsp;Edit Project</button>
+        <a href="/Project/Index" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>&nbsp;Discard</a>
+    </div>
 }
-
