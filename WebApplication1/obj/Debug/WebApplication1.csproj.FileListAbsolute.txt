@@ -308,7 +308,6 @@ E:\facultate\dawv2\TotallyNotJira\WebApplication1\bin\Microsoft.Owin.Security.Mi
 E:\facultate\dawv2\TotallyNotJira\WebApplication1\bin\Microsoft.Owin.Security.OAuth.xml
 E:\facultate\dawv2\TotallyNotJira\WebApplication1\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 E:\facultate\dawv2\TotallyNotJira\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
-E:\facultate\dawv2\TotallyNotJira\WebApplication1\obj\Debug\WebApplication1.csproj.CoreCompileInputs.cache
 E:\facultate\dawv2\TotallyNotJira\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 E:\facultate\dawv2\TotallyNotJira\WebApplication1\obj\Debug\WebApplication1.dll
 E:\facultate\dawv2\TotallyNotJira\WebApplication1\obj\Debug\WebApplication1.pdb
