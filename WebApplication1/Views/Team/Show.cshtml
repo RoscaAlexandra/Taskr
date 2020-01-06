@@ -1,30 +1,147 @@
 ﻿@model WebApplication1.Models.Team
 
-@{
-    ViewBag.Title = "Show";
-}
+<div class="page-header">
+    <h1>@Model.Name <small>Team</small></h1>
+</div>
 
-<h2>@Model.Name</h2>
-
-<h3>Members</h3>
-<ul>
-    @foreach (var member in Model.Members)
-    {
-        <li>@member.UserName</li>
-    }
-</ul>
-<!--<a href="/Task1/Index">Go to tasks overview</a>-->
-
-<h2>Task overview</h2>
-<ul>
-    @foreach (var task in Model.Tasks)
-    {
-        <div class="panel-heading">
-             <a href="/Task1/Show/@task.Value">Task @task.Text</a>
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title" style="display: inline-block;">Task overview</h4>
+                <a href="/Task1/New" class="btn btn-primary pull-right" style="margin: -8px -8px 0 0;"><span class="glyphicon glyphicon-plus"></span></a>
+            </div>
+            <div class="panel-body">
+                @foreach (var task in ViewBag.Tasks)
+                {
+                    switch (task.TaskStatus)
+                    {
+                        case "Not started":
+                            <a href="/Task1/Show/@task.TaskId" class="list-group-item">
+                                <span class="label label-primary pull-right">@task.TaskStatus</span>
+                                <h4 class="list-group-item-heading">@task.TaskTitle</h4>
+                                <p class="list-group-item-text">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Project</strong></td>
+                                                <td class="col-xs-8"><a href="/Project/Show/@task.Project.ProjectId">@task.Project.Name</a></td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Description</strong></td>
+                                                <td class="col-xs-8">@task.TaskDescription</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>User</strong></td>
+                                                <td class="col-xs-8">Username</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Start Date</strong></td>
+                                                <td class="col-xs-8">@task.TaskStartDate</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>End Date</strong></td>
+                                                <td class="col-xs-8">@task.TaskEndDate</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </p>
+                            </a>
+                            break;
+                        case "In progress":
+                            <a href="/Task1/Show/@task.TaskId" class="list-group-item list-group-item-info">
+                                <span class="label label-info pull-right">@task.TaskStatus</span>
+                                <h4 class="list-group-item-heading">@task.TaskTitle</h4>
+                                <p class="list-group-item-text">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Project</strong></td>
+                                                <td class="col-xs-8"><a href="/Project/Show/@task.Project.ProjectId">@task.Project.Name</a></td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Description</strong></td>
+                                                <td class="col-xs-8">@task.TaskDescription</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>User</strong></td>
+                                                <td class="col-xs-8">Username</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Start Date</strong></td>
+                                                <td class="col-xs-8">@task.TaskStartDate</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>End Date</strong></td>
+                                                <td class="col-xs-8">@task.TaskEndDate</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </p>
+                            </a>
+                            break;
+                        case "Done":
+                            <a href="/Task1/Show/@task.TaskId" class="list-group-item list-group-item-success">
+                                <span class="label label-success pull-right">@task.TaskStatus</span>
+                                <h4 class="list-group-item-heading">@task.TaskTitle</h4>
+                                <p class="list-group-item-text">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Project</strong></td>
+                                                <td class="col-xs-8"><a href="/Project/Show/@task.Project.ProjectId">@task.Project.Name</a></td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Description</strong></td>
+                                                <td class="col-xs-8">@task.TaskDescription</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>User</strong></td>
+                                                <td class="col-xs-8">Username</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>Start Date</strong></td>
+                                                <td class="col-xs-8">@task.TaskStartDate</td>
+                                            </tr>
+                                            <tr class="row">
+                                                <td class="col-xs-4"><strong>End Date</strong></td>
+                                                <td class="col-xs-8">@task.TaskEndDate</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </p>
+                            </a>
+                            break;
+                    }
+                }
+            </div>
         </div>
-        <div class="panel-footer"></div>
-        <br />
-        <br />
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Members</h4>
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    @foreach (var member in Model.Members)
+                    {
+                        <div class="list-group-item">
+                            @member.UserName
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    }
-</ul>
+
+@using (Html.BeginForm(actionName: "Delete", controllerName: "Team", method: FormMethod.Post, routeValues: new { id = @Model.TeamId }))
+{
+    <div class="btn-group" role="group">
+        <a href="/Team/Edit/@Model.TeamId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Team</a>
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Team</button>
+    </div>
+}

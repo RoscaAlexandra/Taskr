@@ -54,11 +54,10 @@ namespace WebApplication1.Controllers
             }
            
 
-            var selectList = new List<SelectListItem>();
+            var selectList = new List<Task1>();
 
             // Extragem toate taskurile din baza de date
-            var tasks = from task in db.Tasks
-                        select task;
+            var tasks = db.Tasks.OrderByDescending(x => x.TaskStatus);
             // var projects = team.Projects;
             var allProjects = from project in db.Projects
                            select project;
@@ -74,16 +73,11 @@ namespace WebApplication1.Controllers
                     {
                         if(task.ProjectId == project.ProjectId)
                         {
-                            selectList.Add(new SelectListItem
-                            {
-                                Value = task.TaskId.ToString(),
-                                Text = task.TaskTitle.ToString()
-
-                            });
+                        selectList.Add(task);
                         }
                     }
 
-            team.Tasks = selectList;
+            ViewBag.Tasks = selectList;
 
             return View(team);
         }
