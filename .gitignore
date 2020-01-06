@@ -1,0 +1,6 @@
+WebApplication1/bin/
+WebApplication1/obj/
+WebApplication1/App_Data/
+packages/
+.csproj
+.vs/
