@@ -56,7 +56,7 @@ namespace TotallyNotJira.Controllers
 
         // POST: Project/Create
         [HttpPost]
-        [Authorize(Roles = "Member, Organizator,Administrator")]
+        [Authorize(Roles = "Member,Organizator,Administrator")]
         public ActionResult New(Project project)
         {
             try
@@ -93,9 +93,15 @@ namespace TotallyNotJira.Controllers
                 return View(project);
             }
         }
-        [Authorize(Roles = "Organizator,Administrator")]
+        [Authorize(Roles = "Member,Organizator,Administrator")]
         public ActionResult Edit(int id)
         {
+            if (User.IsInRole("Member"))
+            {
+                TempData["message"] = "You don't have the permission to edit this project!";
+                return RedirectToAction("Index");
+            }
+
             Project project = db.Projects.Find(id);
             ViewBag.Project = project;
             ViewBag.Teams = GetTeams();
@@ -154,9 +160,15 @@ namespace TotallyNotJira.Controllers
         }
 
         // GET: Project/Delete/5
-        [Authorize(Roles = "Organizator,Administrator")]
+        [Authorize(Roles = "Member,Organizator,Administrator")]
         public ActionResult Delete(int id)
         {
+            if (User.IsInRole("Member"))
+            {
+                TempData["message"] = "You don't have the permission to delete this project!";
+                return RedirectToAction("Index");
+            }
+
             Project project = db.Projects.Find(id);
             if (project.UserId == User.Identity.GetUserId() ||
             User.IsInRole("Administrator"))

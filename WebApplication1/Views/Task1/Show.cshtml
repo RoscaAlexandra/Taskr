@@ -24,7 +24,18 @@
     <div class="form-inline"><strong>End date:</strong></div>
     <div>@Model.TaskEndDate.ToString("MM/dd/yyyy") </div>
     <br />
-    <div><strong> Status: </strong>@Model.TaskStatus </div>
+     <div><strong> Status: </strong></div>
+
+    @using (Html.BeginForm(controllerName:"Task1", actionName:"Show"))
+    {
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+
+        <br />
+        @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
+     "Select status", new { @class = "form-inline" })
+        <button class="btn btn-sm " type="submit">Save the new status</button>
+    }
+
     <br />
     <div>
         <strong> Responsable member of the team: </strong>@if (Model.Member != null && Model.Member.UserName != "")
@@ -35,11 +46,11 @@
     </div>
     <br />
     <div class="panel-footer">
-        <a class="btn" href="/Task1/Edit/@Model.TaskId">Edit task</a>
-        <a class="btn" href="/Task1/ModifyStatus/@Model.TaskId">Edit status</a>
+        <a class="btn" href="/Task1/Edit/@Model.TaskId">Edit other details of the task</a>
         <br />
     </div>
 </div>
+<div class="page-header"><h3> Team Comments </h3></div>
 <br />
 @foreach (var comment in ViewBag.Comments)
 {
@@ -56,7 +67,7 @@
 <a class="btn" href="/Comment/New/@Model.TaskId">Add a comment on this task</a>
 <br />
 <hr />
-<a class="btn btn-success" href="/Task1/Index">Go back to overview</a>
+<a class="btn btn-success" href="/Team/Show/@Model.Project.TeamId">Go back to team overview</a>
 
 
 
