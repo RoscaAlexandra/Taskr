@@ -1,53 +1,94 @@
 ﻿@model TotallyNotJira.Models.Task1
 
-@{
-    ViewBag.Title = "Display task details";
-    ViewBag.None = "None";
-}
-
-<h1>@ViewBag.Title</h1>
 @if (TempData.ContainsKey("message"))
 {
     <h3 class="alert alert-info" role="alert">@TempData["message"]</h3>
 }
 
-<div class="panel panel-default">
+@{ 
+    string bgcolor = "";
+    string color = "";
 
-    <div class="panel-heading"><strong>@Model.TaskTitle</strong></div>
-    <div class="panel-body">
-        @Model.TaskDescription
-    </div>
-    <br />
-    <div class="form-inline"><strong>Start date: </strong></div>
-    <div>@Model.TaskStartDate.ToString("MM/dd/yyyy") </div>
-    <br />
-    <div class="form-inline"><strong>End date:</strong></div>
-    <div>@Model.TaskEndDate.ToString("MM/dd/yyyy") </div>
-    <br />
-     <div><strong> Status: </strong></div>
-
-    @using (Html.BeginForm(controllerName:"Task1", actionName:"Show"))
+    switch (Model.TaskStatus)
     {
-        @Html.HttpMethodOverride(HttpVerbs.Put)
-
-        <br />
-        @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
-     "Select status", new { @class = "form-inline" })
-        <button class="btn btn-sm " type="submit">Save the new status</button>
+        case "Not started":
+            bgcolor = "default";
+            color = "primary";
+            break;
+        case "In progress":
+            bgcolor = "info";
+            color = "info";
+            break;
+        case "Done":
+            bgcolor = "success";
+            color = "success";
+            break;
     }
-
-    <br />
-    <div>
-        <strong> Responsable member of the team: </strong>@if (Model.Member != null && Model.Member.UserName != "")
-        {@Model.Member.UserName}
-    else
-    { @ViewBag.None;
 }
-    </div>
-    <br />
-    <div class="panel-footer">
-        <a class="btn" href="/Task1/Edit/@Model.TaskId">Edit other details of the task</a>
-        <br />
+
+<div class="panel panel-@bgcolor">
+    <div class="panel-heading"><h4 class="panel-title" style="display: inline-block;">@Model.TaskTitle</h4> <span class="label label-@color pull-right">@Model.TaskStatus</span></div>
+    <div class="panel-body">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @Model.TaskDescription
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <tbody>
+                <tr class="row">
+                    <td class="col-xs-4"><strong>Project</strong></td>
+                    <td class="col-xs-8"><a href="/Project/Show/@Model.Project.ProjectId">@Model.Project.Name</a></td>
+                </tr>
+                <tr class="row">
+                    <td class="col-xs-4"><strong>Description</strong></td>
+                    <td class="col-xs-8">@Model.TaskDescription</td>
+                </tr>
+                <tr class="row">
+                    <td class="col-xs-4"><strong>User</strong></td>
+                    <td class="col-xs-8">
+                        @if (Model.Member != null && Model.Member.UserName != "")
+                        {
+                            @Model.Member.UserName
+                        }
+                        else
+                        {
+                            @ViewBag.None;
+                        }
+                    </td>
+                </tr>
+                <tr class="row">
+                    <td class="col-xs-4"><strong>Start Date</strong></td>
+                    <td class="col-xs-8">@Model.TaskStartDate</td>
+                </tr>
+                <tr class="row">
+                    <td class="col-xs-4"><strong>End Date</strong></td>
+                    <td class="col-xs-8">@Model.TaskEndDate</td>
+                </tr>
+            </tbody>
+        </table>
+
+        @using (Html.BeginForm(controllerName: "Task1", actionName: "Show"))
+        {
+            @Html.HttpMethodOverride(HttpVerbs.Put)
+
+            <br />
+            @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
+         "Select status", new { @class = "form-inline" })
+            <button class="btn btn-sm " type="submit">Save the new status</button>
+        }
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Change task status <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/Task1/" class="bg-default">Not started</a></li>
+                <li><a href="#" class="bg-info">In progress</a></li>
+                <li><a href="#" class="bg-success">Done</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="page-header"><h3> Team Comments </h3></div>
