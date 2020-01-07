@@ -71,7 +71,7 @@
         
 
         <div class="btn-group" role="group">
-            <a href="/Task1/Edit/@Model.TaskId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span></a>
+            <a href="/Task1/Edit/@Model.TaskId" class="btn btn-primary @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }"><span class="glyphicon glyphicon-edit"></span></a>
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Change task status <span class="caret"></span>
@@ -102,8 +102,8 @@
                                 <p><small>Added by <a href="/Users/Show/@comment.User.Id">@comment.UserName</a></small></p>
                             }
                             <div class="btn-group" role="group">
-                                <a href="/Comment/Edit/@comment.CommentId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span></a>
-                                <a href="/Comment/Delete/@comment.CommentId" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                <a href="/Comment/Edit/@comment.CommentId" class="btn btn-primary @if (!User.IsInRole("Administrator") && User.Identity.Name != comment.UserName) { <text>disabled</text> }"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="/Comment/Delete/@comment.CommentId" class="btn btn-danger @if (!User.IsInRole("Administrator") && User.Identity.Name != comment.UserName) { <text>disabled</text> }"><span class="glyphicon glyphicon-trash"></span></a>
                             </div>
                         </div>
                     </div>

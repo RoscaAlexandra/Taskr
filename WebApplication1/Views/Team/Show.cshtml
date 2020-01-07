@@ -12,7 +12,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title" style="display: inline-block;">Task overview</h4>
-                <a href="/Task1/New" class="btn btn-primary pull-right" style="margin: -8px -8px 0 0;"><span class="glyphicon glyphicon-plus"></span></a>
+                <a href="/Task1/New" class="btn btn-primary pull-right @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }" style="margin: -8px -8px 0 0;"><span class="glyphicon glyphicon-plus"></span></a>
             </div>
             <div class="panel-body">
                 @if (ViewBag.Tasks != null)
@@ -177,8 +177,8 @@
 @using (Html.BeginForm(actionName: "Delete", controllerName: "Team", method: FormMethod.Post, routeValues: new { id = @Model.TeamId }))
 {
     <div class="btn-group" role="group">
-        <a href="/Team/Edit/@Model.TeamId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Team</a>
+        <a href="/Team/Edit/@Model.TeamId" class="btn btn-primary @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Team</a>
         @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Team</button>
+        <button class="btn btn-danger" type="submit" @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Team</button>
     </div>
 }
