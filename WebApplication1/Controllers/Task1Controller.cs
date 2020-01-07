@@ -93,6 +93,11 @@ namespace TotallyNotJira.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (task.TaskEndDate < task.TaskStartDate)
+                    {
+                        TempData["message"] = "You cannot finish a task before you start it!";
+                        return RedirectToAction("New");
+                    }
                     var projectId = task.ProjectId;
                     task.Project = db.Projects.Find(projectId);
                     var id = Int32.Parse(task.Project.TeamId); 

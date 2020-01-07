@@ -8,6 +8,11 @@
     <h1>Create New Task</h1>
 </div>
 
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-danger" role="alert">@TempData["message"]</h3>
+}
+
 @using (Html.BeginForm(actionName: "New", controllerName: "Task1"))
 {
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
