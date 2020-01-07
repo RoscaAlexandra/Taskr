@@ -78,7 +78,7 @@ namespace TotallyNotJira.Controllers
             });
             ViewBag.Statuses = selectList;
 
-            task.Projects = GetAllProjects();
+            task.Projects = GetAllProjects(User.Identity.Name);
 
            
 
@@ -150,7 +150,7 @@ namespace TotallyNotJira.Controllers
             });
             ViewBag.Statuses = selectList;
 
-            task.Projects = GetAllProjects();
+            task.Projects = GetAllProjects(User.Identity.Name);
 
             Project project = db.Projects.Find(task.ProjectId);
             Team team = db.Teams.Find(Int32.Parse(project.TeamId));
@@ -178,6 +178,11 @@ namespace TotallyNotJira.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (requiredTask.TaskEndDate < requiredTask.TaskStartDate)
+                    {
+                        TempData["message"] = "You cannot finish a task before you start it!";
+                        return RedirectToAction("New");
+                    }
                     Task1 task = db.Tasks.Find(id);
 
                     if (TryUpdateModel(task))
@@ -245,14 +250,13 @@ namespace TotallyNotJira.Controllers
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> GetAllProjects()
+        public IEnumerable<SelectListItem> GetAllProjects(string userName)
         {
             // generam o lista goala
             var selectList = new List<SelectListItem>();
 
             // Extragem toate categoriile din baza de date
-            var teams = from project in db.Projects
-                             select project;
+            var teams = db.Projects.Where(x => x.User.UserName == userName);
 
             // iteram prin categorii
             foreach (var team in teams)

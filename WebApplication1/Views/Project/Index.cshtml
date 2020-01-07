@@ -30,9 +30,9 @@
                     @using (Html.BeginForm(actionName: "Delete", controllerName: "Project", method: FormMethod.Post, routeValues: new { id = project.ProjectId }))
                     {
                         <div class="btn-group" role="group">
-                            <a href="/Project/Edit/@project.ProjectId" class="btn btn-primary @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a href="/Project/Edit/@project.ProjectId" class="btn btn-primary @if (!User.IsInRole("Administrator") && (User.Identity.Name != project.User.UserName)) { <text>disabled</text> }"><span class="glyphicon glyphicon-edit"></span></a>
                             @Html.HttpMethodOverride(HttpVerbs.Delete)
-                            <button class="btn btn-danger" type="submit" @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }><span class="glyphicon glyphicon-trash"></span></button>
+                            <button class="btn btn-danger" type="submit" @if (!User.IsInRole("Administrator") && (User.Identity.Name != project.User.UserName)) { <text>disabled</text> }><span class="glyphicon glyphicon-trash"></span></button>
                         </div>
                     }
                 </div>
