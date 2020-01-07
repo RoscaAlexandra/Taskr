@@ -4,52 +4,57 @@
     ViewBag.Titlu = "New task";
 }
 
-<h2>@ViewBag.Titlu</h2>
-<br />
+<div class="page-header">
+    <h1>Create New Task</h1>
+</div>
+
+@if (TempData.ContainsKey("message"))
+{
+    <h3 class="alert alert-danger" role="alert">@TempData["message"]</h3>
+}
 
 @using (Html.BeginForm(actionName: "New", controllerName: "Task1"))
 {
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    @Html.Label("TaskTitle", "Task Title")
-    <br />
-    @Html.TextBox("TaskTitle", null, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.TaskTitle, "", new { @class = "text-danger" })
-    <br />
-    <br />
+    <div class="form-group">
+        @Html.Label("TaskTitle", "Task Title")
+        @Html.TextBox("TaskTitle", null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TaskTitle, "", new { @class = "text-danger" })
+    </div>
 
-    @Html.Label("TaskDescription", "Description")
-    <br />
-    @Html.TextArea("TaskDescription", null, new { @class = "form-control" })
-    //@Html.ValidationMessage("Content", "", new { @class = "text-danger" })
-    <br />
+    <div class="form-group">
+        @Html.Label("TaskDescription", "Description")
+        @Html.TextArea("TaskDescription", null, new { @class = "form-control" })
+        @Html.ValidationMessage("TaskDescription", "", new { @class = "text-danger" })
+    </div>
 
-    @Html.Label("TaskStartDate", "Start Date")
-    <br />
-    @Html.TextBoxFor(m => m.TaskStartDate, new { type = "date" })
-    <br />
+    <div class="form-group">
+        @Html.Label("TaskStartDate", "Start Date")
+        @Html.TextBoxFor(m => m.TaskStartDate, new { type = "date" })
+        @Html.ValidationMessage("TaskStartDate", "", new { @class = "text-danger" })
+    </div>
 
-    @Html.Label("TaskEndDate", "End Date")
-    <br />
-    @Html.TextBoxFor(m => m.TaskEndDate, new { type = "date" })
-    <br />
+    <div class="form-group">
+        @Html.Label("TaskEndDate", "End Date")
+        @Html.TextBoxFor(m => m.TaskEndDate, new { type = "date" })
+        @Html.ValidationMessage("TaskEndDate", "", new { @class = "text-danger" })
+    </div>
 
-    <!--todo : change to display available project, also teams-->
-    @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.Projects, "Value", "Text"),
-    "Select THE PROJECT ASSIGNED TO", new { @class = "form-control" })
+    <div class="form-group">
+        @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.Projects, "Value", "Text"),
+        "Select Project", new { @class = "form-control" })
+    </div>
 
-    <label>Status:</label>
-    @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"),
- "Select status", new { @class = "form-control" })
+    <div class="form-group">
+        @Html.Label("TaskStatus", "End Date")
+        @Html.DropDownListFor(m => m.TaskStatus, new SelectList(ViewBag.Statuses, "Text", "Text"), "Select Status", new { @class = "form-control" })
+    </div>
 
-    <br />
-    <br />
-    <!--  <label>Member assiged to:</label>-->
-    //  @Html.DropDownListFor(m => m.MemberId, new SelectList(ViewBag.Users, "Value", "Text"),
-    // "Select member", new { @class = "form-control" })
-
-    <br />
-    <button class="btn btn-sm btn-success" type="submit">Save task</button>
+    <div class="btn-group" role="group">
+        <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-ok"></span>&nbsp;Create Team</button>
+        <a href="/Task1/Index" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>&nbsp;Discard</a>
+    </div>
 }
 
 

@@ -21,16 +21,18 @@
                     <a href="/Project/Show/@project.ProjectId"><h3 class="panel-title">@project.Name</h3></a>
                 </div>
                 <div class="panel-body">
-                    <p>@project.Description</p>
+                    <p><strong>Description:</strong> @project.Description</p>
 
-                    <p><small><i>created by</i> <i class="glyphicon glyphicon-user"></i>@project.User.UserName</small></p>
+                    <p><strong>Team:</strong> <a href="/Team/Show/@project.Team.TeamId">@project.Team.Name</a></p>
+
+                    <p><small>created by <i class="glyphicon glyphicon-user"></i><a href="/Users/Show/@project.User.Id">@project.User.UserName</a></small></p>
 
                     @using (Html.BeginForm(actionName: "Delete", controllerName: "Project", method: FormMethod.Post, routeValues: new { id = project.ProjectId }))
                     {
                         <div class="btn-group" role="group">
-                            <a href="/Project/Edit/@project.ProjectId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a href="/Project/Edit/@project.ProjectId" class="btn btn-primary @if (!User.IsInRole("Administrator") && (User.Identity.Name != project.User.UserName)) { <text>disabled</text> }"><span class="glyphicon glyphicon-edit"></span></a>
                             @Html.HttpMethodOverride(HttpVerbs.Delete)
-                            <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+                            <button class="btn btn-danger" type="submit" @if (!User.IsInRole("Administrator") && (User.Identity.Name != project.User.UserName)) { <text>disabled</text> }><span class="glyphicon glyphicon-trash"></span></button>
                         </div>
                     }
                 </div>

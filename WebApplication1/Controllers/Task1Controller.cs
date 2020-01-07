@@ -56,49 +56,6 @@ namespace TotallyNotJira.Controllers
             return View(task);
 
         }
-        [HttpPut]
-        public ActionResult Show(int id, Task1 requiredTask)
-        {
-            try
-            {
-                Task1 task = db.Tasks.Find(id);
-                task.TaskStatus = requiredTask.TaskStatus;
-                db.SaveChanges();
-                TempData["message"] = "Status changed!";
-                var selectList = new List<SelectListItem>();
-                selectList.Add(new SelectListItem
-                {
-                    Value = "1",
-                    Text = "Not started"
-                });
-                selectList.Add(new SelectListItem
-                {
-                    Value = "2",
-                    Text = "In progress"
-                });
-                selectList.Add(new SelectListItem
-                {
-                    Value = "3",
-                    Text = "Done"
-                });
-                ViewBag.Statuses = selectList;
-
-                var comments = db.Comments;
-                var goodComments = new List<Comment>();
-                foreach (var comment in comments)
-                {
-                    if (comment.TaskId == task.TaskId)
-                        goodComments.Add(comment);
-                }
-                ViewBag.Comments = goodComments;
-
-                return View(task);
-            }
-            catch
-            {
-                return View();
-            }
-        }
         [Authorize(Roles = "Organizator,Administrator")]
         public ActionResult New()
         {
@@ -121,7 +78,7 @@ namespace TotallyNotJira.Controllers
             });
             ViewBag.Statuses = selectList;
 
-            task.Projects = GetAllProjects();
+            task.Projects = GetAllProjects(User.Identity.Name);
 
            
 
@@ -136,6 +93,11 @@ namespace TotallyNotJira.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (task.TaskEndDate < task.TaskStartDate)
+                    {
+                        TempData["message"] = "You cannot finish a task before you start it!";
+                        return RedirectToAction("New");
+                    }
                     var projectId = task.ProjectId;
                     task.Project = db.Projects.Find(projectId);
                     var id = Int32.Parse(task.Project.TeamId); 
@@ -188,7 +150,7 @@ namespace TotallyNotJira.Controllers
             });
             ViewBag.Statuses = selectList;
 
-            task.Projects = GetAllProjects();
+            task.Projects = GetAllProjects(User.Identity.Name);
 
             Project project = db.Projects.Find(task.ProjectId);
             Team team = db.Teams.Find(Int32.Parse(project.TeamId));
@@ -216,6 +178,11 @@ namespace TotallyNotJira.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (requiredTask.TaskEndDate < requiredTask.TaskStartDate)
+                    {
+                        TempData["message"] = "You cannot finish a task before you start it!";
+                        return RedirectToAction("New");
+                    }
                     Task1 task = db.Tasks.Find(id);
 
                     if (TryUpdateModel(task))
@@ -244,6 +211,34 @@ namespace TotallyNotJira.Controllers
             }
         }
 
+        public ActionResult ChangeStatus(int id, int newTaskStatus)
+        {
+            try
+            {
+                Task1 task = db.Tasks.Find(id);
+                switch (newTaskStatus)
+                {
+                    case 1:
+                        task.TaskStatus = "Not started";
+                        break;
+                    case 2:
+                        task.TaskStatus = "In progress";
+                        break;
+                    case 3:
+                        task.TaskStatus = "Done";
+                        break;
+                }
+                db.SaveChanges();
+                TempData["message"] = "Status changed!";
+
+                return RedirectToAction("Show", new { id = id });
+            }
+            catch
+            {
+                return RedirectToAction("Show", new { id = id });
+            }
+        }
+
         [Authorize(Roles = "Organizator,Administrator")]
         public ActionResult Delete(int id)
         {
@@ -255,14 +250,13 @@ namespace TotallyNotJira.Controllers
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> GetAllProjects()
+        public IEnumerable<SelectListItem> GetAllProjects(string userName)
         {
             // generam o lista goala
             var selectList = new List<SelectListItem>();
 
             // Extragem toate categoriile din baza de date
-            var teams = from project in db.Projects
-                             select project;
+            var teams = db.Projects.Where(x => x.User.UserName == userName);
 
             // iteram prin categorii
             foreach (var team in teams)

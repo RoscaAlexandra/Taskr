@@ -10,13 +10,13 @@
 
 <p>@Model.Description</p>
 
-<p><small><i>created by</i> <i class="glyphicon glyphicon-user"></i>@Model.User.UserName</small></p>
+<p><small>created by <i class="glyphicon glyphicon-user"></i><a href="/Users/Show/@Model.User.Id">@Model.User.UserName</a></small></p>
 
 @using (Html.BeginForm(actionName: "Delete", controllerName: "Project", method: FormMethod.Post, routeValues: new { id = @Model.ProjectId }))
 {
     <div class="btn-group" role="group">
-        <a href="/Project/Edit/@Model.ProjectId" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Project</a>
+        <a href="/Project/Edit/@Model.ProjectId" class="btn btn-primary @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }"><span class="glyphicon glyphicon-edit"></span>&nbsp;Edit Project</a>
         @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Project</button>
+        <button class="btn btn-danger @if (!User.IsInRole("Administrator") && !User.IsInRole("Organizator")) { <text>disabled</text> }" type="submit"><span class="glyphicon glyphicon-trash"></span>&nbsp;Delete Project</button>
     </div>
 }
