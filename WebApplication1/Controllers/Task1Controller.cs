@@ -56,49 +56,6 @@ namespace TotallyNotJira.Controllers
             return View(task);
 
         }
-        [HttpPut]
-        public ActionResult Show(int id, Task1 requiredTask)
-        {
-            try
-            {
-                Task1 task = db.Tasks.Find(id);
-                task.TaskStatus = requiredTask.TaskStatus;
-                db.SaveChanges();
-                TempData["message"] = "Status changed!";
-                var selectList = new List<SelectListItem>();
-                selectList.Add(new SelectListItem
-                {
-                    Value = "1",
-                    Text = "Not started"
-                });
-                selectList.Add(new SelectListItem
-                {
-                    Value = "2",
-                    Text = "In progress"
-                });
-                selectList.Add(new SelectListItem
-                {
-                    Value = "3",
-                    Text = "Done"
-                });
-                ViewBag.Statuses = selectList;
-
-                var comments = db.Comments;
-                var goodComments = new List<Comment>();
-                foreach (var comment in comments)
-                {
-                    if (comment.TaskId == task.TaskId)
-                        goodComments.Add(comment);
-                }
-                ViewBag.Comments = goodComments;
-
-                return View(task);
-            }
-            catch
-            {
-                return View();
-            }
-        }
         [Authorize(Roles = "Organizator,Administrator")]
         public ActionResult New()
         {
@@ -241,6 +198,34 @@ namespace TotallyNotJira.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        public ActionResult ChangeStatus(int id, int newTaskStatus)
+        {
+            try
+            {
+                Task1 task = db.Tasks.Find(id);
+                switch (newTaskStatus)
+                {
+                    case 1:
+                        task.TaskStatus = "Not started";
+                        break;
+                    case 2:
+                        task.TaskStatus = "In progress";
+                        break;
+                    case 3:
+                        task.TaskStatus = "Done";
+                        break;
+                }
+                db.SaveChanges();
+                TempData["message"] = "Status changed!";
+
+                return RedirectToAction("Show", new { id = id });
+            }
+            catch
+            {
+                return RedirectToAction("Show", new { id = id });
             }
         }
 

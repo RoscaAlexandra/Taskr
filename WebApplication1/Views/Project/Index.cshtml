@@ -21,9 +21,11 @@
                     <a href="/Project/Show/@project.ProjectId"><h3 class="panel-title">@project.Name</h3></a>
                 </div>
                 <div class="panel-body">
-                    <p>@project.Description</p>
+                    <p><strong>Description:</strong> @project.Description</p>
 
-                    <p><small><i>created by</i> <i class="glyphicon glyphicon-user"></i>@project.User.UserName</small></p>
+                    <p><strong>Team:</strong> <a href="/Team/Show/@project.Team.TeamId">@project.Team.Name</a></p>
+
+                    <p><small>created by <i class="glyphicon glyphicon-user"></i><a href="/Users/Show/@project.User.Id">@project.User.UserName</a></small></p>
 
                     @using (Html.BeginForm(actionName: "Delete", controllerName: "Project", method: FormMethod.Post, routeValues: new { id = project.ProjectId }))
                     {
